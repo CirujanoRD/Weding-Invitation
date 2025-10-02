@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación de Boda - Kelvin & Llerali</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500&display=swap');
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+        .emerald-bg {
+            background-color: #046a38;
+        }
+        .gold-text {
+            color: #d4af37;
+        }
+        .emerald-text {
+            color: #046a38;
+        }
+        .gold-border {
+            border-color: #d4af37;
+        }
+        .floral-divider {
+            position: relative;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none"><path fill="%23046a38" d="M0,0 L100,0 L100,5 C75,10 25,10 0,5 Z"/></svg>') center bottom no-repeat;
+            background-size: 100% 100%;
+        }
+        .invitation-card {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+        .invitation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        .couple-image {
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+        }
+        .rsvp-btn {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #046a38 0%, #024a27 100%);
+        }
+        .rsvp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(4, 106, 56, 0.4);
+        }
+        .modal {
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        /* Animación de la carta portada */
+        #flap {
+            transform-origin: top center;
+        }
+        #envelope.abierto #flap {
+            transform: rotateX(180deg);
+        }
+        #openingPage.oculto {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+    </style>
+</head>
+<body class="bg-emerald-50">
+    <!-- Portada: Carta animada -->
+    <div id="openingPage" class="fixed inset-0 bg-emerald-900 z-50 flex items-center justify-center p-4 cursor-pointer transition-opacity duration-1000" onclick="abrirInvitacion()">
+      <div id="envelope" class="relative w-64 h-48">
+        <!-- Parte inferior del sobre -->
+        <div class="absolute inset-0 bg-white rounded-lg shadow-lg z-10"></div>
+        <!-- Solapa del sobre -->
+        <div id="flap" class="absolute top-0 left-0 w-full h-1/2 bg-gray-200 rounded-t-lg z-20 transform transition-transform duration-1000 origin-top"></div>
+        <!-- Texto de invitación -->
+        <div class="absolute inset-0 flex flex-col justify-center items-center z-30 text-center px-4">
+          <h2 class="text-2xl text-emerald-800 mb-2 font-bold">¡Estás Invitado!</h2>
+          <p class="text-sm text-gray-600">Kelvin & Llerali</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenido principal oculto inicialmente -->
+    <main id="mainInvitation" class="hidden">
+        <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="invitation-card max-w-2xl w-full bg-white rounded-lg overflow-hidden">
+                <!-- Header with couple names -->
+                <div class="emerald-bg py-8 px-6 text-center relative">
+                    <div class="absolute top-4 left-4 right-4 h-1 bg-white bg-opacity-30 rounded-full"></div>
+                    <h1 class="title-font text-4xl md:text-5xl font-bold text-white mb-2">Kelvin & Llerali</h1>
+                    <p class="text-white text-lg md:text-xl font-light">¡Nos casamos!</p>
+                    <div class="absolute bottom-4 left-4 right-4 h-1 bg-white bg-opacity-30 rounded-full"></div>
+                </div>
+                <!-- Couple photo -->
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                        alt="Kelvin y Llerali" 
+                        class="couple-image w-full h-64 md:h-96 object-cover">
+                </div>
+                <!-- Wedding details -->
+                <div class="py-8 px-6 text-center">
+                    <div class="mb-6">
+                        <h2 class="title-font text-3xl font-semibold emerald-text mb-2">Invitación de Boda</h2>
+                        <div class="floral-divider my-4"></div>
+                        <p class="text-gray-700 mb-4">Con la bendición de Dios y nuestros padres</p>
+                        <p class="text-gray-700 mb-1">Tienen el honor de invitarlos a celebrar</p>
+                        <p class="text-gray-700 mb-1">su unión matrimonial</p>
+                    </div>
+                    <!-- Date section -->
+                    <div class="mb-8">
+                        <div class="flex justify-center items-center mb-4">
+                            <div class="border-r-2 gold-border pr-4 mr-4">
+                                <p class="text-sm uppercase tracking-wider">Día</p>
+                                <p class="title-font text-3xl font-bold emerald-text">26</p>
+                            </div>
+                            <div class="border-r-2 gold-border pr-4 mr-4">
+                                <p class="text-sm uppercase tracking-wider">Mes</p>
+                                <p class="title-font text-3xl font-bold emerald-text">Diciembre</p>
+                            </div>
+                            <div>
+                                <p class="text-sm uppercase tracking-wider">Año</p>
+                                <p class="title-font text-3xl font-bold emerald-text">2025</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-1">A las 4:00 de la tarde</p>
+                        <p class="text-gray-700">Lugar: Por confirmar</p>
+                    </div>
+                    <!-- Countdown -->
+                    <div class="mb-8 p-4 bg-emerald-50 rounded-lg">
+                        <h3 class="title-font text-xl emerald-text mb-2">Faltan</h3>
+                        <div id="countdown" class="flex justify-center space-x-2 md:space-x-4">
+                            <div class="text-center">
+                                <div class="text-2xl md:text-3xl font-bold emerald-text" id="days">00</div>
+                                <div class="text-xs text-gray-600">Días</div>
+                            </div>
+                            <div class="text-2xl font-bold emerald-text pt-2">:</div>
+                            <div class="text-center">
+                                <div class="text-2xl md:text-3xl font-bold emerald-text" id="hours">00</div>
+                                <div class="text-xs text-gray-600">Horas</div>
+                            </div>
+                            <div class="text-2xl font-bold emerald-text pt-2">:</div>
+                            <div class="text-center">
+                                <div class="text-2xl md:text-3xl font-bold emerald-text" id="minutes">00</div>
+                                <div class="text-xs text-gray-600">Minutos</div>
+                            </div>
+                            <div class="text-2xl font-bold emerald-text pt-2">:</div>
+                            <div class="text-center">
+                                <div class="text-2xl md:text-3xl font-bold emerald-text" id="seconds">00</div>
+                                <div class="text-xs text-gray-600">Segundos</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- RSVP Button -->
+                    <button id="rsvpBtn" class="rsvp-btn text-white py-3 px-8 rounded-full font-medium text-lg shadow-lg mb-6">
+                        Confirmar Asistencia
+                    </button>
+                    <!-- Footer -->
+                    <div class="text-sm text-gray-500">
+                        <p>"El amor no consiste en mirarse el uno al otro, sino en mirar juntos en la misma dirección."</p>
+                        <p class="mt-1">- Antoine de Saint-Exupéry</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- RSVP Modal -->
+    <div id="rsvpModal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg max-w-md w-full p-6 relative">
+            <button id="closeModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h2 class="title-font text-2xl emerald-text text-center mb-4">Confirmar Asistencia</h2>
+            <form id="rsvpForm" class="space-y-4">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
+                    <input type="text" id="name" name="name" required 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
+                    <input type="email" id="email" name="email" required 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label for="guests" class="block text-sm font-medium text-gray-700 mb-1">Número de invitados</label>
+                    <select id="guests" name="guests" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <option value="1">1 persona</option>
+                        <option value="2" selected>2 personas</option>
+                        <option value="3">3 personas</option>
+                        <option value="4">4 personas</option>
+                        <option value="5">5 personas</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">¿Asistirás?</label>
+                    <div class="flex space-x-4">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="attending" value="yes" checked 
+                                class="text-emerald-600 focus:ring-emerald-500">
+                            <span class="ml-2">Con gusto asistiré</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="attending" value="no" 
+                                class="text-emerald-600 focus:ring-emerald-500">
+                            <span class="ml-2">No podré asistir</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Mensaje para los novios (opcional)</label>
+                    <textarea id="message" name="message" rows="3" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                </div>
+                <button type="submit" class="w-full rsvp-btn text-white py-2 px-4 rounded-md font-medium">
+                    Enviar Confirmación
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Message -->
+    <div id="confirmationMessage" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg max-w-md w-full p-6 text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-emerald-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h3 class="title-font text-2xl emerald-text mb-2">¡Gracias por confirmar!</h3>
+            <p class="text-gray-700 mb-4">Tu asistencia ha sido registrada. Nos vemos el día de la boda.</p>
+            <button id="closeConfirmation" class="emerald-bg text-white py-2 px-6 rounded-md font-medium">
+                Cerrar
+            </button>
+        </div>
+    </div>
+
+    <script>
+      // Animación de la carta portada
+      function abrirInvitacion() {
+        const envelope = document.getElementById('envelope');
+        const flap = document.getElementById('flap');
+        const openingPage = document.getElementById('openingPage');
+        const mainContent = document.getElementById('mainInvitation');
+
+        envelope.classList.add('abierto');
+
+        setTimeout(() => {
+          openingPage.classList.add('oculto');
+          setTimeout(() => {
+            openingPage.style.display = 'none';
+            mainContent.classList.remove('hidden');
+          }, 1000);
+        }, 1000);
+      }
+
+      // Countdown timer
+      function updateCountdown() {
+          const weddingDate = new Date('December 26, 2025 16:00:00').getTime();
+          const now = new Date().getTime();
+          const distance = weddingDate - now;
+          
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+          
+          document.getElementById('days').innerHTML = days.toString().padStart(2, '0');
+          document.getElementById('hours').innerHTML = hours.toString().padStart(2, '0');
+          document.getElementById('minutes').innerHTML = minutes.toString().padStart(2, '0');
+          document.getElementById('seconds').innerHTML = seconds.toString().padStart(2, '0');
+      }
+      setInterval(updateCountdown, 1000);
+      updateCountdown();
+
+      // Modal functionality
+      const rsvpBtn = document.getElementById('rsvpBtn');
+      const rsvpModal = document.getElementById('rsvpModal');
+      const closeModal = document.getElementById('closeModal');
+      const confirmationMessage = document.getElementById('confirmationMessage');
+      const closeConfirmation = document.getElementById('closeConfirmation');
+      const rsvpForm = document.getElementById('rsvpForm');
+      
+      rsvpBtn.addEventListener('click', () => {
+          rsvpModal.classList.add('active');
+      });
+      
+      closeModal.addEventListener('click', () => {
+          rsvpModal.classList.remove('active');
+      });
+      
+      closeConfirmation.addEventListener('click', () => {
+          confirmationMessage.classList.remove('active');
+      });
+      
+      rsvpForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          rsvpModal.classList.remove('active');
+          
+          // Collect form data
+          const formData = new FormData(rsvpForm);
+          const data = Object.fromEntries(formData);
+          
+          // Send via mailto (actual email submission would need server-side code)
+          const subject = `Confirmación de Asistencia - ${data.name}`;
+          const body = `Nombre: ${data.name}\nEmail: ${data.email}\nInvitados: ${data.guests}\nAsistencia: ${data.attending}\nMensaje: ${data.message || 'Ninguno'}`;
+          window.location.href = `mailto:kelvingadames@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+          
+          setTimeout(() => {
+              confirmationMessage.classList.add('active');
+          }, 300);
+          
+          // Reset form
+          rsvpForm.reset();
+      });
+
+      // Close modals when clicking outside
+      window.addEventListener('click', (e) => {
+          if (e.target === rsvpModal) {
+              rsvpModal.classList.remove('active');
+          }
+          if (e.target === confirmationMessage) {
+              confirmationMessage.classList.remove('active');
+          }
+      });
+    </script>
